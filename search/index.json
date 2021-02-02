@@ -1,1 +1,1 @@
-[]
+[{"content":"開發Arduino 有很多的軟體我就介紹我最常使用的二個IDE\n1. Arduino官方的IDE  這個IDE是由Arduino官方社群維護，所以比較好入門 官網-Ardino 下載頁面-Downloads  2. VSCode + PlatformIO  首先電腦要先安裝Microsoft Visual Studio Code Microsoft Visual Studio Code(下載頁面:VS Code) 進入VSCode點選左邊直列的延伸模組搜尋PlatformIO並安裝  ","date":"2021-02-02","permalink":"https://blog.hank1234.tk/post/arduino/","tags":["Arduino"],"title":"安裝開發Arduino 的環境"}]
