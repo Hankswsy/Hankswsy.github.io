@@ -2,7 +2,7 @@
 <span class=title-sub>紀錄、資訊分享</span></div></div></header><main><div class="container-lg clearfix"><div class="col-12 col-md-9 float-left content"><article><h2 class="post-item post-title"><a href=https://blog.hank1234.tk/post/python-photo-effects-processing/>Python 照片特效處理</a></h2><div class="post-item post-meta"><span><i class="iconfont icon-today-sharp"></i>&nbsp;2021-02-02</span><span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;188 字</span><span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href=/tags/python>Python</a>&nbsp;</span></div><div class="post-content markdown-body"><p>今天來記錄一下最近學到的有趣Python應用照片特效處理。
 主要使用PIL模組裡的功能</p><h2 id=首先先引入模組>首先先引入模組</h2><pre><code>from PIL import Image          
 from PIL import ImageFilter
-</code></pre><p>Image 主要處理改變照片格式、大小等功能</p><p>ImageFilter 可以將照片套用不同的濾鏡</p><h2 id=開啟照片>開啟照片</h2><pre><code>img1 = Image.open(&quot;car.jpg&quot;)
+</code></pre><p>Image 主要處理改變照片格式、大小等功能</p><p>ImageFilter 可以將照片套用不同的濾鏡</p><h2 id=開啟照片>開啟照片</h2><pre><code>img1 = Image.open(&quot;test.jpg&quot;)
 </code></pre><p>這是用來測試的照片
 <img class=img-zoomable src=/photo-effects%28python%29/test.jpg alt=eraser></p><h2 id=1-讓照片清晰>1. 讓照片清晰</h2><pre><code>img2 = img1.filter(ImageFilter.DETAIL)
 img2.save(&quot;DETAIL.jpg&quot;)
