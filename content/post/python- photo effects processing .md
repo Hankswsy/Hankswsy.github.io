@@ -17,7 +17,7 @@ Image 主要處理改變照片格式、大小等功能
 ImageFilter 可以將照片套用不同的濾鏡
 
 ## 開啟照片
-    img1 = Image.open("car.jpg")
+    img1 = Image.open("test.jpg")
 這是用來測試的照片
 ![eraser](/photo-effects(python)/test.jpg)
 
