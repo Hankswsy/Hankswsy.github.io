@@ -1,9 +1,9 @@
----
-title: "Python Module"
-date: 2021-06-23
-draft: true
++++
+title = "Python Module"
+description = "Python Module"
+date = 2021-03-05
 tags = ["Python"]
----
++++
 
 今天來記錄一下這個簡單的Python 模組應用
 如果程式中需要反覆使用同一段程式碼的話，將它寫成模組是不錯的選擇。
