@@ -1,5 +1,5 @@
 +++
-title = "Python Module"
+title = "Python Class"
 description = "Python Module"
 date = 2021-03-12
 tags = ["Python"]
