@@ -1,0 +1,71 @@
+<!doctype html><html lang=zh-hant><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=HandheldFriendly content="True"><meta http-equiv=x-ua-compatible content="IE=edge"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=generator content="Hugo 0.80.0"><link rel="shortcut icon" href=https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico><title>Python Webcrawler - Hank的部落格</title><meta name=author content="Hank的部落格"><meta name=description content="Python Webcrawler"><meta name=keywords content="Python"><meta property="og:title" content="Python Webcrawler"><meta name=twitter:title content="Python Webcrawler"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.hank1234.tk/post/python-webcrawler/"><meta property="og:description" content="Python Webcrawler"><meta name=twitter:description content="Python Webcrawler"><meta property="og:image" content="https://blog.hank1234.tk/img/og.png"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://blog.hank1234.tk/img/og.png"><meta property="article:published_time" content="2021-04-12T00:00:00+00:00"><meta property="article:modified_time" content="2021-04-12T00:00:00+00:00"><style>@media(prefers-color-scheme:dark){body[data-theme=auto] img{filter:brightness(60%)}}body[data-theme=dark] img{filter:brightness(60%)}</style><link rel=stylesheet href=https://blog.hank1234.tk/assets/css/fuji.min.css></head><body data-theme=auto><script data-cfasync=false>var fujiThemeData=localStorage.getItem('fuji_data-theme');if(!fujiThemeData){localStorage.setItem('fuji_data-theme','auto');}else{if(fujiThemeData!=='auto'){document.body.setAttribute('data-theme',fujiThemeData==='dark'?'dark':'light');}}</script><header><div class="container-lg clearfix"><div class="col-12 header"><a class=title-main href=https://blog.hank1234.tk>Hank的部落格</a>
+<span class=title-sub>紀錄、資訊分享</span></div></div></header><main><div class="container-lg clearfix"><div class="col-12 col-md-9 float-left content"><article><h2 class="post-item post-title"><a href=https://blog.hank1234.tk/post/python-webcrawler/>Python Webcrawler</a></h2><div class="post-item post-meta"><span><i class="iconfont icon-today-sharp"></i>&nbsp;2021-04-12</span><span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;434 字</span><span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href=/tags/python>Python</a>&nbsp;</span></div><div class="post-content markdown-body"><p>今天來記錄一下Python爬蟲
+python爬蟲是一門說簡單也不簡單，說困難也不困難的應用
+透過撰寫Python爬蟲技術，可以省下以往要一筆一筆資料手動抓取的時間，並且可以精準的拿到資料</p><p>範例是以majortests這個網站裡提供的Word List做示範</p><h2 id=首先先引入爬蟲需要的mod>首先先引入爬蟲需要的mod</h2><pre><code>import requests
+from bs4 import BeautifulSoup as bs
+import time
+import csv
+</code></pre><h2 id=接著設定目標的網址>接著設定目標的網址</h2><pre><code>url = &quot;https://www.majortests.com/word-lists/word-list-{}.html&quot;
+#&quot;{}&quot;是要放入不同頁面編號的地方
+</code></pre><h2 id=用for迴圈設定要取得那些頁面>用for迴圈設定要取得那些頁面</h2><pre><code>def num(url, start, end):
+    urll = []
+    x = str
+    for i in range(start, end+1):
+        x=&quot;{:02d}&quot;.format(i)
+        urll.append(url.format(x))
+    
+    return urll
+</code></pre><h2 id=伺服器驗證>伺服器驗證</h2><pre><code>def get_resource(url):
+    headers = {&quot;user-agent&quot;:&quot;Mozilla/5.0(Windows NT 10.0; Win64; x64) ApplWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.329.130 Safari/537.36&quot;}
+    return requests.get(url, headers=headers)
+</code></pre><h2 id=取得網頁html>取得網頁HTML</h2><pre><code>def catchingwordbot(urls):
+    eng_words=[]
+    for i in urls:
+        file = i.split(&quot;/&quot;)[-1]
+        print(&quot;catching: &quot;, file, &quot;web data...&quot;)
+        r = get_resource(i)
+        if r.status_code == requests.codes.ok:
+            soup = webcode(r.text)
+            words = get_word(soup, file)  
+            eng_words = eng_words + words
+            print(&quot;wait 5 sec&quot;)
+            time.sleep(5)  #避免被判定是DDoS攻擊，以每5秒請求一次
+        else:
+            print(&quot;http request error!&quot;)
+
+    return eng_words
+</code></pre><h2 id=解析回傳的html>解析回傳的HTML</h2><pre><code>def webcode(r):
+    return bs(r, &quot;html.parser&quot;)
+</code></pre><h2 id=分析html並提取出目標>分析HTML並提取出目標</h2><pre><code>def get_word(soup,file):
+    word = []
+    count = 0
+    for data in soup.findAll(class_=&quot;wordlist&quot;):
+        count += 1
+        for word_e in data.findAll(&quot;tr&quot;):
+            new_word = []
+            new_word.append(file)
+            new_word.append(f&quot;Grop{str(count)}&quot;)
+            new_word.append(word_e.th.text)
+            new_word.append(word_e.td.text)
+            word.append(new_word)
+    return word
+</code></pre><h2 id=將目標整理成csv檔>將目標整理成csv檔</h2><pre><code>def excelsave(word,name):
+    with open(f'{name}.csv', 'w', newline='', encoding=&quot;UTF8&quot;) as csvfile:
+        
+        writer = csv.writer(csvfile)
+        for i in word:
+            # 寫入一列資料
+            writer.writerow(i)
+</code></pre><h2 id=主程式>主程式</h2><pre><code>if __name__ == &quot;__main__&quot;:
+x=&quot;EnglishWord&quot;
+urls = num(url, 1, 10)
+eng_words = catchingwordbot(urls)
+excelsave(eng_words,x)
+</code></pre><h2 id=執行結果>執行結果</h2><p><img class=img-zoomable src=/webcrawler/test.jpg alt=test></p><h2 id=csv檔>CSV檔</h2><p><img class=img-zoomable src=/webcrawler/test1.jpg alt=test></p></div></article><div class="license markdown-body"><blockquote><p>除特殊註明部分，本站內容採用 <a rel=license href=http://creativecommons.org/licenses/by-nc-sa/4.0/ target=_blank>CC BY-NC-SA 4.0</a> 授權。</p></blockquote></div></div><aside class="col-12 col-md-3 float-left sidebar"><div class="sidebar-item sidebar-pages"><h3>頁面</h3><ul><li><a href=/>Home</a></li><li><a href=/archives/>Archives</a></li><li><a href=/about/>About</a></li><li><a href=/search/>Search</a></li></ul></div><div class="sidebar-item sidebar-links"><h3>鏈接</h3><ul><li><a href=https://github.com/Hankswsy target=_blank><span>GitHub</span></a></li></ul></div><div class="sidebar-item sidebar-tags"><h3>標籤</h3><div><span><a href=/tags/arduino/>Arduino</a></span>
+<span><a href=/tags/hc-sr501/>HC-SR501</a></span>
+<span><a href=/tags/python/>Python</a></span></div></div><div class="sidebar-item sidebar-toc"><h3>目錄</h3><nav id=TableOfContents><ul><li><a href=#首先先引入爬蟲需要的mod>首先先引入爬蟲需要的mod</a></li><li><a href=#接著設定目標的網址>接著設定目標的網址</a></li><li><a href=#用for迴圈設定要取得那些頁面>用for迴圈設定要取得那些頁面</a></li><li><a href=#伺服器驗證>伺服器驗證</a></li><li><a href=#取得網頁html>取得網頁HTML</a></li><li><a href=#解析回傳的html>解析回傳的HTML</a></li><li><a href=#分析html並提取出目標>分析HTML並提取出目標</a></li><li><a href=#將目標整理成csv檔>將目標整理成csv檔</a></li><li><a href=#主程式>主程式</a></li><li><a href=#執行結果>執行結果</a></li><li><a href=#csv檔>CSV檔</a></li></ul></nav></div></aside></div><div class=btn><div class=btn-menu id=btn-menu><i class="iconfont icon-grid-sharp"></i></div><div class=btn-toggle-mode><i class="iconfont icon-contrast-sharp"></i></div><div class=btn-scroll-top><i class="iconfont icon-chevron-up-circle-sharp"></i></div></div><aside class=sidebar-mobile style=display:none><div class=sidebar-wrapper><div class="sidebar-item sidebar-pages"><h3>頁面</h3><ul><li><a href=/>Home</a></li><li><a href=/archives/>Archives</a></li><li><a href=/about/>About</a></li><li><a href=/search/>Search</a></li></ul></div><div class="sidebar-item sidebar-links"><h3>鏈接</h3><ul><li><a href=https://github.com/Hankswsy target=_blank><span>GitHub</span></a></li></ul></div><div class="sidebar-item sidebar-tags"><h3>標籤</h3><div><span><a href=/tags/arduino/>Arduino</a></span>
+<span><a href=/tags/hc-sr501/>HC-SR501</a></span>
+<span><a href=/tags/python/>Python</a></span></div></div><div class="sidebar-item sidebar-toc"><h3>目錄</h3><nav id=TableOfContents><ul><li><a href=#首先先引入爬蟲需要的mod>首先先引入爬蟲需要的mod</a></li><li><a href=#接著設定目標的網址>接著設定目標的網址</a></li><li><a href=#用for迴圈設定要取得那些頁面>用for迴圈設定要取得那些頁面</a></li><li><a href=#伺服器驗證>伺服器驗證</a></li><li><a href=#取得網頁html>取得網頁HTML</a></li><li><a href=#解析回傳的html>解析回傳的HTML</a></li><li><a href=#分析html並提取出目標>分析HTML並提取出目標</a></li><li><a href=#將目標整理成csv檔>將目標整理成csv檔</a></li><li><a href=#主程式>主程式</a></li><li><a href=#執行結果>執行結果</a></li><li><a href=#csv檔>CSV檔</a></li></ul></nav></div></div></aside></main><footer><div class="container-lg clearfix"><div class="col-12 footer"><span>&copy; 2020-2021
+<a href=https://blog.hank1234.tk>Hank的部落格</a>
+| <a href=https://github.com>Source code</a>
+| 基於 <a href=https://github.com/amzrk2/hugo-theme-fuji/ target=_blank>Fuji-v2</a> & <a href=https://gohugo.io/ target=_blank>Hugo</a> 構建</span></div></div></footer><script defer src=https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js></script><script defer src=https://cdn.jsdelivr.net/npm/lazysizes@5.3.0/lazysizes.min.js></script><script defer src=https://cdn.jsdelivr.net/npm/prismjs@1.23.0/components/prism-core.min.js></script><script defer src=https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/autoloader/prism-autoloader.min.js></script><script defer src=/assets/js/fuji.min.js></script></body></html>
