@@ -9,7 +9,7 @@ tags = ["Python"]
 python爬蟲是一門說簡單也不簡單，說困難也不困難的應用
 透過撰寫Python爬蟲技術，可以省下以往要一筆一筆資料手動抓取的時間，並且可以精準的拿到資料
 
-範例是以majortests這個網站裡提供的Word List做示範
+範例是以[majortests](https://www.majortests.com/)這個網站裡提供的Word List做示範
 
 ## 首先先引入爬蟲需要的mod
 
