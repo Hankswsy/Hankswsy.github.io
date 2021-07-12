@@ -104,3 +104,74 @@ python爬蟲是一門說簡單也不簡單，說困難也不困難的應用
 
 ## CSV檔
 ![test](/webcrawler/test1.jpg)
+
+## 完整程式碼
+
+    import requests
+    from bs4 import BeautifulSoup as bs
+    import time
+    import csv
+
+    url = "https://www.majortests.com/word-lists/word-list-{}.html"
+
+    def num(url, start, end):
+        urll = []
+        x = str
+        for i in range(start, end+1):
+            x="{:02d}".format(i)
+            urll.append(url.format(x))
+        
+        return urll
+
+    def get_resource(url):
+        headers = {"user-agent":"Mozilla/5.0(Windows NT 10.0; Win64; x64) ApplWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.329.130 Safari/537.36"}
+        return requests.get(url, headers=headers)
+
+    def webcode(r):
+        return bs(r, "html.parser")
+
+    def get_word(soup,file):
+        word = []
+        count = 0
+        for data in soup.findAll(class_="wordlist"):
+            count += 1
+            for word_e in data.findAll("tr"):
+                new_word = []
+                new_word.append(file)
+                new_word.append(f"Grop{str(count)}")
+                new_word.append(word_e.th.text)
+                new_word.append(word_e.td.text)
+                word.append(new_word)
+        return word
+
+    def catchingwordbot(urls):
+        eng_words=[]
+        for i in urls:
+            file = i.split("/")[-1]
+            print("catching: ", file, "web data...")
+            r = get_resource(i)
+            if r.status_code == requests.codes.ok:
+                soup = webcode(r.text)
+                words = get_word(soup, file)  
+                eng_words = eng_words + words
+                print("wait 5 sec")
+                time.sleep(5)
+            else:
+                print("http request error!")
+
+        return eng_words
+
+    def excelsave(word,name):
+        with open(f'{name}.csv', 'w', newline='', encoding="UTF8") as csvfile:
+            
+            writer = csv.writer(csvfile)
+            for i in word:
+                # 寫入一列資料
+                writer.writerow(i)
+
+
+    if __name__ == "__main__":
+        x="EnglishWord"
+        urls = num(url, 1, 10)
+        eng_words = catchingwordbot(urls)
+        excelsave(eng_words,x)
