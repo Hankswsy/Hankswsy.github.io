@@ -57,31 +57,31 @@ tags = ["Python"]
     lab.grid(row=0,column=0, columnspan=4,sticky=NSEW)
 
     but = Button(window, text="9", font=("Calibri"), command=lambda:math("9"))
-    but.grid(row=1, column=0, sticky=NSEW)
+    but.grid(row=1, column=2, sticky=NSEW)
 
     but1 = Button(window, text="8", font=("Calibri"), command=lambda:math("8"))
     but1.grid(row=1, column=1, sticky=NSEW)
 
     but2 = Button(window, text="7", font=("Calibri"), command=lambda:math("7"))
-    but2.grid(row=1, column=2, sticky=NSEW)
+    but2.grid(row=1, column=0, sticky=NSEW)
 
     but3 = Button(window, text="6", font=("Calibri"), command=lambda:math("6"))
-    but3.grid(row=2, column=0, sticky=NSEW)
+    but3.grid(row=2, column=2, sticky=NSEW)
 
     but4 = Button(window, text="5", font=("Calibri"), command=lambda:math("5"))
     but4.grid(row=2, column=1, sticky=NSEW)
 
     but5 = Button(window, text="4", font=("Calibri"), command=lambda:math("4"))
-    but5.grid(row=2, column=2, sticky=NSEW)
+    but5.grid(row=2, column=0, sticky=NSEW)
 
     but6 = Button(window, text="3", font=("Calibri"), command=lambda:math("3"))
-    but6.grid(row=3, column=0, sticky=NSEW)
+    but6.grid(row=3, column=2, sticky=NSEW)
 
     but7 = Button(window, text="2", font=("Calibri"), command=lambda:math("2"))
     but7.grid(row=3, column=1, sticky=NSEW)
 
     but8 = Button(window, text="1", font=("Calibri"), command=lambda:math("1"))
-    but8.grid(row=3, column=2, sticky=NSEW)
+    but8.grid(row=3, column=0, sticky=NSEW)
 
     but9 = Button(window, text="0", font=("Calibri"), command=lambda:math("0"))
     but9.grid(row=4, column=0, sticky=NSEW)
@@ -119,6 +119,8 @@ tags = ["Python"]
     window.mainloop()
 
 ## 執行結果
+運算123*4 = 492
+
 ![test](/GUI/test.jpg)
 
 ![test](/GUI/test1.jpg)
