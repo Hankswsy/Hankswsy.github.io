@@ -93,10 +93,10 @@ python爬蟲是一門說簡單也不簡單，說困難也不困難的應用
 ## 主程式
 
     if __name__ == "__main__":
-    x="EnglishWord"
-    urls = num(url, 1, 10)
-    eng_words = catchingwordbot(urls)
-    excelsave(eng_words,x)
+        x="EnglishWord"
+        urls = num(url, 1, 10)
+        eng_words = catchingwordbot(urls)
+        excelsave(eng_words,x)
 
 
 ## 執行結果
