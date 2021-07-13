@@ -57,10 +57,10 @@ import csv
             # 寫入一列資料
             writer.writerow(i)
 </code></pre><h2 id=主程式>主程式</h2><pre><code>if __name__ == &quot;__main__&quot;:
-x=&quot;EnglishWord&quot;
-urls = num(url, 1, 10)
-eng_words = catchingwordbot(urls)
-excelsave(eng_words,x)
+    x=&quot;EnglishWord&quot;
+    urls = num(url, 1, 10)
+    eng_words = catchingwordbot(urls)
+    excelsave(eng_words,x)
 </code></pre><h2 id=執行結果>執行結果</h2><p><img class=img-zoomable src=/webcrawler/test.jpg alt=test></p><h2 id=csv檔>CSV檔</h2><p><img class=img-zoomable src=/webcrawler/test1.jpg alt=test></p><h2 id=完整程式碼>完整程式碼</h2><pre><code>import requests
 from bs4 import BeautifulSoup as bs
 import time
